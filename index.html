@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Storage</title>
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="app container">
+
+    <div class="breadcrumbs">
+      
+    </div>
+
+    <div class="action-bar">
+
+      <button class="create-folder button tooltip" onclick="openCreateFolderModal()">
+        <i class="bi bi-folder-plus"></i>
+        <p class="tooltip-text">New folder</p>
+      </button>
+      
+      <label class="file-upload button tooltip">
+        <input type="file" name="" id="" style="display: none;">
+        <i class="bi bi-file-earmark-arrow-up"></i>
+        <p class="tooltip-text">Upload file</p>
+      </label>
+      
+      <button class="create-txt button tooltip" onclick="openCreateTxtModal()">
+        <i class="bi bi-file-earmark-font"></i>
+        <p class="tooltip-text">New text</p>
+      </button>
+      
+      <button class="download button tooltip" onclick="downloadItem()">
+        <i class="bi bi-download"></i>
+        <p class="tooltip-text">Download</p>
+      </button>
+      
+      <button class="delete button tooltip" onclick="deleteItem()">
+        <i class="bi bi-trash"></i>
+        <p class="tooltip-text">Delete</p>
+      </button>
+
+    </div>
+
+    <div class="directory">
+      
+    </div>
+
+    <div class="create-folder-modal hidden" onclick="openCreateFolderModal()">
+      <div class="modal-content" onclick="stopPropagation(event)">
+        <div class="header">
+          <p class="title">Create new folder</p>
+          <button class="close" onclick="openCreateFolderModal()"><i class="bi bi-x"></i></button>
+        </div>
+        <form>
+          <input type="text" name="folderName" placeholder="New Folder">
+          <button>Create</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="create-txt-modal hidden" onclick="openCreateTxtModal()">
+      <div class="modal-content" onclick="stopPropagation(event)">
+        <div class="header">
+          <p class="title">Create new text</p>
+          <button class="close" onclick="openCreateTxtModal()"><i class="bi bi-x"></i></button>
+        </div>
+        <form>
+          <input type="text" name="name" placeholder="New Text" value="New Text">
+          <textarea name="content" placeholder="Enter your text here"></textarea>
+          <button>Create</button>
+        </form>
+      </div>
+    </div>
+    
+    <div class="progress-modal hidden">
+      <div class="modal-content">
+        <p>Processing...</p>
+        <progress value="50" max="100"></progress>
+        <div class="status">50%</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
