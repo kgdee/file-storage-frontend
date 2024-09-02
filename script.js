@@ -9,6 +9,8 @@ const createFolderForm = document.querySelector(".create-folder-modal form")
 const createTxtModal = document.querySelector(".create-txt-modal")
 const createTxtForm = document.querySelector(".create-txt-modal form")
 
+const apiUrl = 'http://127.0.0.1:3000'
+
 
 let currentFolder = { id: null, name: "My Drive", path: null, type: "root" }
 
@@ -16,7 +18,7 @@ let items = []
 
 let selectedItem = null
 
-const socket = io('http://127.0.0.1:3000');  // Connect to the WebSocket server
+const socket = io(apiUrl);  // Connect to the WebSocket server
 
 function stopPropagation(event) {
   event.stopPropagation()
@@ -64,7 +66,8 @@ function isImage(filename) {
 
 async function openFolder(folderId) {
   loading(0)
-  currentFolder = await getFolder(folderId)
+  const response = await fetch(`${apiUrl}/folders/${folderId}`)
+  currentFolder = await response.json()
   loading(50)
   listFiles(folderId, refreshFiles)
 
@@ -83,7 +86,8 @@ async function displayBreadcrumbs() {
   if (currentFolder.type === "root") return
 
   for (const folderId of currentFolder.path) {
-    const folder = await getFolder(folderId)
+    const response = await fetch(`${apiUrl}/folders/${folderId}`)
+    const folder = await response.json()
     
     breadcrumbsEl.innerHTML += ` / <span onclick="openFolder('${folderId}')">${folder.name}<span>`
   }
@@ -100,7 +104,7 @@ fileUploadInput.addEventListener("input", function() {
   formData.append('file', file);
   if (currentFolder.id) formData.append('folderId', currentFolder.id);
 
-  fetch('http://127.0.0.1:3000/files', {
+  fetch(`${apiUrl}/files`, {
     method: 'POST',
     body: formData
   })
@@ -139,9 +143,9 @@ function deleteItem() {
   if (!selectedItem) return
 
   if (selectedItem.type === "file") {
-    fetch(`http://127.0.0.1:3000/files/${selectedItem.id}`, { method: 'DELETE' })
+    fetch(`${apiUrl}/files/${selectedItem.id}`, { method: 'DELETE' })
   } else {
-    fetch(`http://127.0.0.1:3000/folders/${selectedItem.id}`, { method: 'DELETE' })
+    fetch(`${apiUrl}/folders/${selectedItem.id}`, { method: 'DELETE' })
   }
 
   selectedItem = null
@@ -183,7 +187,7 @@ function createFolder() {
     parentFolderId: currentFolder.id
   }
 
-  fetch("http://127.0.0.1:3000/folders", {
+  fetch(`${apiUrl}/folders`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -214,7 +218,7 @@ function createTxt() {
     folderId: currentFolder.id
   }
 
-  fetch("http://127.0.0.1:3000/files/txt", {
+  fetch(`${apiUrl}/files/txt`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
