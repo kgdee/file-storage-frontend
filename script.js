@@ -65,17 +65,11 @@ function isImage(filename) {
 }
 
 async function openFolder(folderId) {
-  loading(0)
-  const response = await fetch(`${apiUrl}/folders/${folderId}`)
+  const response = await fetch(`${apiUrl}/folders/${folderId || ""}`)
   currentFolder = await response.json()
-  loading(50)
   listFiles(folderId, refreshFiles)
 
-  // console.log(currentFolder.path)
   displayBreadcrumbs()
-
-  loading(100)
-  setTimeout(()=>loading(null), 500);
 }
 
 
@@ -86,7 +80,7 @@ async function displayBreadcrumbs() {
   if (currentFolder.type === "root") return
 
   for (const folderId of currentFolder.path) {
-    const response = await fetch(`${apiUrl}/folders/${folderId}`)
+    const response = await fetch(`${apiUrl}/folders/${folderId || ""}`)
     const folder = await response.json()
     
     breadcrumbsEl.innerHTML += ` / <span onclick="openFolder('${folderId}')">${folder.name}<span>`
