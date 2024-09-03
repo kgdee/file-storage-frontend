@@ -9,7 +9,7 @@ const createFolderForm = document.querySelector(".create-folder-modal form")
 const createTxtModal = document.querySelector(".create-txt-modal")
 const createTxtForm = document.querySelector(".create-txt-modal form")
 
-const apiUrl = 'http://127.0.0.1:3000'
+const apiUrl = 'https://file-storage-backend-iota.vercel.app'
 
 
 let currentFolder = { id: null, name: "My Drive", path: null, type: "root" }
